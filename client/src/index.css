@@ -1,0 +1,5 @@
+/* adding tailwind directive to work with tailwindcss */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
