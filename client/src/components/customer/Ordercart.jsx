@@ -9,7 +9,7 @@ const handleCheckout = ()=>{
   console.log("Check out")
 }
 
-
+//total calculation 
 const total = items.reduce((sum,{price,quantity})=> sum + price * quantity,0);
 
     return (
