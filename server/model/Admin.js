@@ -44,11 +44,9 @@ admin.pre("save", async function(next){ // pre function or this middleware will 
 
 admin.methods.comparedPassword = async function(userPassword){
     try {
-        return await bcrypt.compare(userPassword, this.password)
-        
+        return await bcrypt.compare(userPassword, this.password);        
     } catch (error) {
-        console.log(error);
-        
+        console.log(error);        
     }
 }
 

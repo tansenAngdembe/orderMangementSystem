@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { NavLink,useNavigate } from 'react-router-dom';
 import { 
 
   LayoutDashboard, 
@@ -11,6 +11,12 @@ import {
 } from 'lucide-react';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(!sessionStorage.getItem('token')){
+      navigate('/admin/auth', {replace:true});}
+
+  },[navigate])
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
     { icon: UtensilsCrossed, label: 'Menu Items', path: '/admin/menu-items' },
@@ -21,7 +27,9 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     // Add logout logic here
-    window.location.href = '/';
+    sessionStorage.removeItem('token');
+    // navigate('/admin/auth', {replace:true});
+    window.location.href = '/admin/auth';
   };
 
   return (

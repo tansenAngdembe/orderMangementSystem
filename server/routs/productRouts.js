@@ -4,6 +4,7 @@ const multer = require("multer");// to handle the file uploads
 const {showItems, findItems, insertItems, updateItems,deleteItems} = require("../controller/productController");
 const { register,login } = require("../controller/authController");
 const { protect } = require("../middleware/authMiddleware");
+const {orders} = require("../controller/orderController");
 
 const router = express.Router();
 //  CREATEING THE MIDLEWARE TO HALDLE THE FILE UPLOAD
@@ -45,6 +46,16 @@ router.post("/admin/login",login);
 router.get("/admin/profile",protect,(req,res)=>{
    res.status(200).json({msg:"admin profile"});
 })
+
+
+// Orders endpoint
+router.post("/api/orders", orders);
+
+
+
+
+
+
 
 // testing api for file uploads
 router.post("/api", upload.array("images", 4), (req, res) => {

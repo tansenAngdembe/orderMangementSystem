@@ -8,13 +8,18 @@ const Menu = () => {
     const [items, setItems] = useState([])
     const [selectedId, setSelectedId] = useState([])
     const [isOrderOpen, setIsOrderOpen] = useState(false)
-    const [text, setText] = useState("Add to order!");
+    const [text, setText] = useState({
+        state:false,
+        value:""
+});
 
     useEffect(() => {
         getItems("items").then((result) => {
             setItems(result)
         })
     }, [])
+
+    // localStorage.setItem("item", JSON.stringify(selectedId))
     const addToOrder = (item) => {
         //    setSelectedId([...selectedId,item])
         const isExistingItems = selectedId.find(itemsId => itemsId._id === item._id)
@@ -27,13 +32,16 @@ const Menu = () => {
             setSelectedId([...selectedId, { item, quantity: 1 }])
         }
     }
-    console.log(selectedId)
+    
     return (
-        <div className="space-y-6 m-3 p-3">
+        <div className="space-y-6 m-3 p-3 relative size-100">
+            {/* {text.state? (<div className='items-center absolute top-50% left-50%  '>{text.value}</div>):{...text,state:false}} */}
+            {text.state && (<div className='items-center   absolute start-0 top-0 size-50  '>{text.value}</div>)}
+           
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Menu</h1>
                 <button
-                    onClick={() => setIsCartOpen(true)}
+                    onClick={() =>  setIsOrderOpen(true)}
                     className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
                 >
                     <ShoppingCart className="h-5 w-5 mr-2" />
@@ -55,7 +63,7 @@ const Menu = () => {
                                 onClick={() => addToOrder(item)}
                                 className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
                             >
-                                Add to Order
+                             Order now
                             </button>
                         </div>
                     </div>
@@ -63,9 +71,11 @@ const Menu = () => {
             </div>
             <Ordercart
                 isOpen={isOrderOpen}
-                onClose={() => setIsOrderOpen(false)}
+                onClose={setIsOrderOpen}
                 items={selectedId}
                 setSelected={setSelectedId}
+                settext={setText}
+                text={text}
 
 
 

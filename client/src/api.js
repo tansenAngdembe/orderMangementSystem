@@ -1,5 +1,7 @@
 import axios from "axios"
+
 const uri = import.meta.env.VITE_URI;
+const admin = import.meta.env.VITE_ADMIN;
 
 
 // fetching all the data form the database
@@ -57,12 +59,46 @@ const deleteItems = async (endpoint,id)=>{
 
 
 
+// API FUNCTION FOR CUSTOMER
+
+const customerOrderList = async (endpoint,orderList)=>{
+
+    try {
+        const response = await axios.post(`${uri}/${endpoint}`,orderList);
+        // console.log(response.data)
+        return await response.data;
+    } catch (error) {
+        console.log(error)
+    }
+    // woking there and now i will implement the functionality in server side and then i will test it in cutomer side
+}
+
+
+
+// LOGIN FUNCTION
+const login = async (ednpoint, data) =>{
+    try{
+        const response = await axios.post(`${admin}/${ednpoint}`, data);       
+        // sessionStorage.setItem("token", response.data.token);      
+        return response;
+
+    }catch(error){
+        console.log(error.response.data.msg)
+        
+    }
+
+}
+
+
+
 export {
     getItems,
     putItems,
     findItems,
     updateItems,
-    deleteItems
+    deleteItems,
+    customerOrderList,
+    login
 }
 
 
