@@ -1,34 +1,42 @@
-const { set } = require("mongoose");
 const Ordered = require("../model/Ordered");
 
 
 
 const orders = async (req, res) => {   
     try{
-        const response = await req.body;
-        // console.log(req.body)
+        const {_id,tableNumber,price,state,orderList} = await req.body;
+        const order = new Ordered({_id, tableNumber,state, price, orderList})
+        order.save()
         
-        const setOrder = new Set(response.map((i)=>i.tableNumber));
-        const table = setOrder.values().next().value;
-        // const order = response.map((i)=>({itemId:i.itemId, quantity:i.quantity})); 
-        const order = response.reduce((acc,items)=>{
-            const {itemId,qunatity,tableNumber} = items;
-            
-
-        },{})
-       
-      
-       
-        // const newOrder = new Ordered(order);
-        // const saveOrder = await newOrder.save();
-        res.status(201).json({msg:"Order created successfully", saveOrder});
+        res.status(201).json({msg:"Order created successfully", order});
 
     }catch(error){
         res.status(500).json({msg:"error", error: error.message})
 
     }
+}
+const orderList = async (req,res)=>{
+    try{
+         const getallorder = await Ordered.find();
+         res.status(201).json({msg:"Successfull", getallorder})
+    }catch(error){
+         res.status(500).json({error:error.message})
+    }
+}
 
+const updateSatus = async(req,res)=>{
+    try {
+        const findWithId = await Ordered.findById(req.params.id);
+        const {order_state} = req.body;
+        findWithId.state = order_state || findWithId.state
+        await findWithId.save()
+        res.status(200).json({msg:"Status successfully update", findWithId})
+        
+        
+    } catch (error) {
+        res.status(500).json({error:error.message})        
+    }
 
 }
-module.exports = {orders};
 
+module.exports = {orders, orderList,updateSatus};

@@ -1,17 +1,28 @@
 import { useState } from "react";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { register } from "../../../api"
 
-
-const register = () => {
+const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
-        name: '',
+        userName: '',
         email: '',
         password: ''
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit =async (e) => {
         e.preventDefault();
+        try{
+            const response =await register("register", formData);
+            // if(response.status != 200) throw new Error("Error in registration")
+            console.log(response.data.token);
+            sessionStorage("token",response.data.token)
+            
+            
+
+        }catch(error){
+
+        }
 
     };
     return (
@@ -30,8 +41,8 @@ const register = () => {
                         required
                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Enter your full name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        value={formData.userName}
+                        onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
                     />
                 </div>
             </div>
@@ -50,6 +61,7 @@ const register = () => {
                         required
                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Enter your email"
+                        autoComplete="new-password"
                         value={formData.email}
                        onChange={(e)=> setFormData({...formData, email: e.target.value})}
                     />
@@ -121,4 +133,4 @@ const register = () => {
 
 }
 
-export default register;
+export default Register;

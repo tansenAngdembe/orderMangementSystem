@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Mail, Eye, EyeOff, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import { login } from "../../../api"
+import { login,oauth } from "../../../api"
+
+
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -11,16 +13,24 @@ const Login = () => {
         password: ""
     })
 
+    
+const [token,setToken ] = useState(null)
+useEffect(()=>{
+    const getToken = sessionStorage.getItem("token");
+    if(!getToken){
+        console.log("NO token found! access de")
+    }
+    setToken(getToken);
+ 
+},[])
     const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await login("login", formData)// sending data to api
-            if (response.status != 200) throw new Error()
-            // console.log(response)
-            sessionStorage.setItem("token", response.data.token);
-            // navigate("/admin",{replace:true}) // redirecting to the admin page
-            window.location.href = "/admin";
+             const response = await login("login", formData,token)
+            //  sessionStorage.setItem("token",response.data.token)
+             console.log(response)
+            // window.location.href = "/admin";
         } catch (error) {
             // console.log(error.response.data.msg)
 
@@ -29,8 +39,14 @@ const Login = () => {
     }
 
 
-    const handleGoogleLogin = () => {
-        console.log("Google Login")
+
+    const handleGoogleLogin =async () => {
+           try {
+            const oauth_response = await oauth("api/o/auth/google")
+            console.log(oauth_response)
+           } catch (error) {
+            
+           }
     }
 
 
@@ -90,6 +106,7 @@ const Login = () => {
                         className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Enter your password"
                         value={formData.password}
+                      
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     />
                     <button
@@ -104,6 +121,7 @@ const Login = () => {
                         )}
                     </button>
                 </div>
+               
             </div>
 
             <div className="flex items-center justify-between">

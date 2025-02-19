@@ -34,7 +34,7 @@ const MenuItems = () => {
                                     <div className="flex justify-between items-start mb-2">
                                         <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
                                         <span className="text-lg font-bold text-emerald-600">
-                                            ${item.price.toFixed(2)}
+                                            Rs{item.price.toFixed(2)}
                                         </span>
                                     </div>
                                     <p className="text-gray-600 text-sm line-clamp-2">{item.description}</p>

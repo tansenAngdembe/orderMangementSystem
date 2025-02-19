@@ -4,6 +4,7 @@ const uri = import.meta.env.VITE_URI;
 const admin = import.meta.env.VITE_ADMIN;
 
 
+
 // fetching all the data form the database
 const getItems = async (endpoint) => {
     try {
@@ -37,58 +38,106 @@ const findItems = async (endpoint, id) => {
     }
 
 }
-const updateItems = async (endpoint, id, updateData)=>{
+const updateItems = async (endpoint, id, updateData) => {
     try {
-        const response = await axios.put(`${uri}/${endpoint}/${id}`,updateData);
+        const response = await axios.put(`${uri}/${endpoint}/${id}`, updateData);
         return response.data;
     } catch (error) {
         console.log(error)
     }
 
 }
-const deleteItems = async (endpoint,id)=>{
-   try {
+const deleteItems = async (endpoint, id) => {
+    try {
         const deleteData = await axios.delete(`${uri}/${endpoint}/${id}`);
-    
+
         return deleteData.data;
-   } catch (error) {
-         console.log(error) 
-    
-   }
+    } catch (error) {
+        console.log(error)
+
+    }
 }
 
 
 
 // API FUNCTION FOR CUSTOMER
 
-const customerOrderList = async (endpoint,orderList)=>{
+const customerOrderList = async (endpoint, orderList) => {
 
     try {
-        const response = await axios.post(`${uri}/${endpoint}`,orderList);
+        const response = await axios.post(`${uri}/${endpoint}`, orderList);
         // console.log(response.data)
-        return await response.data;
+        return  response.data;
     } catch (error) {
         console.log(error)
     }
-    // woking there and now i will implement the functionality in server side and then i will test it in cutomer side
+}
+// API FUNCTION TO HANDLE THE ORDERLIST- GET ALL ORDER LIST/ VIEW IN ADMIN/ORDER
+const getAllOrderList =async (endpoint)=>{
+    try {
+        const response = await axios.get(`${uri}/${endpoint}`);
+        return response.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+const updateStatus  = async (endpoint,id,updateState)=>{
+    try {
+        const response = await axios.post(`${uri}/${endpoint}/${id}`, updateState)
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
 }
 
 
 
 // LOGIN FUNCTION
-const login = async (ednpoint, data) =>{
-    try{
-        const response = await axios.post(`${admin}/${ednpoint}`, data);       
-        // sessionStorage.setItem("token", response.data.token);      
+const register = async (ednpoint, data) => {
+    try {
+        const response = await axios.post(`${admin}/${ednpoint}`, data);
+        sessionStorage.setItem("token",response.data.token)
         return response;
 
-    }catch(error){
+    } catch (error) {
         console.log(error.response.data.msg)
-        
+
     }
 
 }
+const login = async (endpoint, data, token) => {
+    try {
+        const reponse = await axios.post(`${admin}/${endpoint}`, data, {
+            headers: { Authorization: `Bearer ${token}` }
 
+        });
+        return reponse;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+// google ouath  
+const oauth = async (endpoint) => {
+    try {
+        const response = await axios.get(`${admin}/${endpoint}`, {
+            // withCredentials: true,
+            headers: {
+                
+                "Content-Type":"application/json",
+                // "Access-Control-Allow-Headers": "authorization"
+            }
+        })
+        return response
+
+    } catch (error) {
+
+    }
+
+}
 
 
 export {
@@ -97,8 +146,14 @@ export {
     findItems,
     updateItems,
     deleteItems,
+
     customerOrderList,
-    login
+    getAllOrderList,
+    updateStatus,
+
+    register,
+    login,
+    oauth
 }
 
 

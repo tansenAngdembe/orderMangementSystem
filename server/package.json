@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "functional orderMangementSystem app",
   "main": "app.js",
+  "proxy": "http://localhost:5173",
   "scripts": {
     "test": "nodemon"
   },

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ArrowRight, LogIn, UserPlus } from 'lucide-react';
-import LoginForm from "./login";
-import RegisterForm from "./register";
+import LoginForm from "./Login";
+import RegisterForm from "./Register";
 
 const Auth = () =>{
     const [isLogin, setIsLogin] = useState(true);

@@ -12,11 +12,11 @@ import {
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  useEffect(()=>{
-    if(!sessionStorage.getItem('token')){
-      navigate('/admin/auth', {replace:true});}
+  // useEffect(()=>{
+  //   if(!sessionStorage.getItem('token')){
+  //     navigate('/admin/auth', {replace:true});}
 
-  },[navigate])
+  // },[navigate])
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
     { icon: UtensilsCrossed, label: 'Menu Items', path: '/admin/menu-items' },

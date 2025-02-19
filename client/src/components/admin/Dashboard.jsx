@@ -3,7 +3,10 @@ import {BarChart as BarChartIcon, Users, DollarSign, ShoppingBag} from "lucide-r
 import {sampleOrders} from "./data/sampleOrder"
 import OrderChart from "./dashboard/OrderChart"
 import SalesChart from "./dashboard/SalesChart"
+import { Provider } from "../../context/contextProvider";
 const Dashboard = ()=>{
+  const {state} = Provider();
+  // console.log(state.order_data.getallorder.length)
   const totalRevenue = sampleOrders.reduce((sum, order) => 
     order.paymentStatus === 'completed' ? sum + order.totalAmount : sum, 0
   );
@@ -11,13 +14,13 @@ const Dashboard = ()=>{
     const stats = [
         { 
           title: 'Total Orders', 
-          value: sampleOrders.length, 
+          value: state.total_order, 
           icon: ShoppingBag, 
           color: 'bg-blue-500' 
         },
         { 
           title: 'Total Revenue', 
-          value: `$${totalRevenue.toFixed(2)}`, 
+          value: `Rs ${totalRevenue.toFixed(2)}`, 
           icon: DollarSign, 
           color: 'bg-green-500' 
         },
@@ -64,26 +67,7 @@ const Dashboard = ()=>{
 
 
     </div>
-
-
  )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 export default Dashboard

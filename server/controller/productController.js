@@ -5,7 +5,7 @@ const showItems = async (req, res) => {
         const items = await Product.find();
         res.status(200).json(items);
     } catch (err) {
-        res.status(500).json({ error: err.massage });
+        res.status(400).json({ error: err.massage });
 
     }
 }
@@ -15,7 +15,7 @@ const findItems = async (req, res) => {
         if (!product) return res.status(404).json({ err: "Product not found." });
         res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({ err: error.message })
+        res.status(400).json({ err: error.message })  
     }
 }
 
@@ -29,7 +29,7 @@ const insertItems = async (req, res) => {
         res.status(200).send("Data inserted");
 
     } catch (error) {
-        res.status(500).json({ error: "Some things went gone wrong" })
+        res.status(400).json({ error: "Some things went gone wrong" })
     }
 }
 
@@ -46,7 +46,7 @@ const updateItems = async (req, res) => {
         res.status(200).json({ msg: "Scuccessfully product upated;" })
 
     } catch (error) {
-        res.status(500).json({ err: error.message })
+        res.status(400).json({ err: error.message })
 
     }
 }
@@ -56,7 +56,7 @@ const deleteItems = async (req, res) => {
         if (!product) return res.status(404).json({ err: "Product not found." });
         res.status(200).json({ msg: "Item deleted successfully!" })
     } catch (error) {
-        res.status(500).json({ err: error.message })
+        res.status(400).json({ err: error.message })
     }
 }
 

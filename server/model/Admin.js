@@ -13,7 +13,8 @@ const admin = new mongoose.Schema({
     password:{
         type: String,
         reqiured: true,
-        minlength : 8
+        minlength : 8,
+        select:false
     },
     email:{
         type: String,
@@ -35,7 +36,7 @@ const admin = new mongoose.Schema({
     }
 
 });
-// HASH THE PASSWORD BEFORE SAVING IN DB
+// HASH THE PASSWORD BEFORE SAVING IN DB // middleware
 admin.pre("save", async function(next){ // pre function or this middleware will not execute in document it will execute while query.
     if(!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 12);
@@ -43,11 +44,10 @@ admin.pre("save", async function(next){ // pre function or this middleware will 
 })
 
 admin.methods.comparedPassword = async function(userPassword){
-    try {
-        return await bcrypt.compare(userPassword, this.password);        
-    } catch (error) {
-        console.log(error);        
-    }
+   if(!userPassword || !this.password){
+    throw new Error("Password is not provided") 
+   }
+   return await bcrypt.compare(userPassword, this.password)
 }
 
 const Admin = mongoose.model("admin",admin);
